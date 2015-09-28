@@ -15,7 +15,8 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "multiparty": "~4.1.2",
+    "request": "~2.64.0",
     "lwip": "git://github.com/kant2002/lwip"
-
   }
 }
+
