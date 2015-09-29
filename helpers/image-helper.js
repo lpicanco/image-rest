@@ -1,4 +1,4 @@
-var exports = module.exports = {};
+//var exports = module.exports = {};
 var lwip = require('lwip');
 
 exports.scale = function(buffer, imageType, ratio, callback) {

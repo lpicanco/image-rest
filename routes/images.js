@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
 var lwip = require('lwip');
-var imageHelper = require('helpers/image-helper');
+var imageHelper = require('../helpers/image-helper');
 var request = require('request').defaults({encoding: null});
 
 /* GET users listing. */
@@ -23,7 +23,7 @@ router.get("/scale", function (req, res, next) {
 
     request.get(url, function (err, imageReq, data) {
         imageHelper.scale(data, imageType, ratio, function (err, image) {
-            res.end(buffer)
+            res.end(image)
         });
 
         /*lwip.open(data, imageType, function (err, image) {
