@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
 var lwip = require('lwip');
+var imageHelper = require('helpers/image-helper');
 var request = require('request').defaults({encoding: null});
 
 /* GET users listing. */
@@ -17,21 +18,23 @@ router.get("/", function (req, res, next) {
 
 router.get("/scale", function (req, res, next) {
     var url = req.query.imageUrl;
-    var imageType = req.query.imageType;
+    var imageType = req.query.imageType || extractImageTypeFromFileName(url);
     var ratio = parseFloat(req.query.ratio);
 
     request.get(url, function (err, imageReq, data) {
-        lwip.open(data, imageType, function (err, image) {
+        imageHelper.scale(data, imageType, ratio, function (err, image) {
+            res.end(buffer)
+        });
+
+        /*lwip.open(data, imageType, function (err, image) {
             console.log("error", err);
             image.batch()
                 .scale(ratio)
                 .toBuffer(imageType, function (err, buffer) {
                     res.end(buffer)
                 });
-        });
+        });*/
     });
-
-
 });
 
 router.post('/upload', function (req, res, next) {
@@ -67,9 +70,13 @@ router.post('/upload', function (req, res, next) {
     form.parse(req);
 });
 
-function extractImageType(part) {
+function extractImageTypeFromContentType(part) {
     var contentType = part.headers["content-type"];
     return contentType.substring(contentType.indexOf('/') + 1);
+}
+
+function extractImageTypeFromFileName(filename) {
+    return filename.split('.').pop();
 }
 
 
